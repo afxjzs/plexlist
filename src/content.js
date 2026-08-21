@@ -85,6 +85,17 @@
     background: #141518; color: #eceef1; font-size: 14px;
   }
   input[type=text]:focus, select:focus { outline: none; border-color: #e5a00d; }
+  /* The native select arrow sits hard against the right border and ignores
+     padding-right, so it never lines up with the 11px inset the text gets on the
+     left. Draw our own and position it to match. */
+  select {
+    appearance: none; -webkit-appearance: none;
+    padding-right: 34px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1.5 L6 6.5 L11 1.5' fill='none' stroke='%238b919b' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    background-size: 12px 8px;
+  }
   .go {
     width: 100%; margin-top: 18px; padding: 11px 14px; border: 0; border-radius: 9px;
     background: #e5a00d; color: #1b1b1b; font-size: 14px; font-weight: 800; cursor: pointer;

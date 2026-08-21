@@ -277,13 +277,13 @@ All *unverified* — I built a web page, not an extension. Flagging what I'd che
 - **CORS stops mattering.** With `host_permissions` for `https://plex.tv/*` and the
   server's origin, an extension's fetches aren't subject to page CORS. The web page
   needed CORS to be open; you probably won't.
-- **Private Network Access is the thing to actually test.** For a web page on a public
-  origin, Chrome blocks requests to private addresses outright — *verified*, this is
-  why the doug.is page skips LAN connections. Extensions have historically had more
-  latitude, and it's the single biggest functional difference between the extension and
-  the web page: if the extension can reach `192.168.x.x`, it works for users whose Plex
-  has no remote access, which the web page can never do. **Test this early**, because
-  it determines whether you can drop the relay/remote requirement.
+- **Private Network Access: the extension CAN reach a server with no remote access.**
+  *Verified 2026-08-21* against a Plex server that has Remote Access switched off — the
+  extension signed in, listed it, read its library and matched titles against a list.
+  For a web page on a public origin Chrome blocks private addresses outright
+  (*verified*, and why the doug.is page skips LAN connections), so this is the single
+  biggest functional difference between the two: the extension works for users whose
+  Plex is not reachable from the internet, and the web page never can.
 - Store the token in `chrome.storage.local`, not `localStorage`, and never in a
   content script's page context.
 - Do the Plex work in the background service worker; use the content script only to

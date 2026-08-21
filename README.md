@@ -132,17 +132,17 @@ Verified against live pages and a live Plex server on 2026-08-20:
 - Letterboxd list markup, its global `data-list-index`, its `a.next` pagination,
   and `data-tmdb-id` / IMDb link on film pages.
 
-**Not yet verified — test these first:**
+- **The full Plex sign-in handshake**, confirmed end to end on 2026-08-21:
+  request a PIN, approve it on app.plex.tv, receive the token, list servers, and
+  read a library. Confirmed against more than one server on the account.
+- **Reaching a Plex server that has no remote access**, same date. Chrome blocks a
+  web page from reaching a private address outright; the extension is not blocked.
+  That is the whole reason this is an extension and not a web page — it works for
+  people whose Plex is not exposed to the internet.
 
-1. **The Plex PIN approval round trip.** PIN creation and polling are verified;
-   nobody has clicked through the approval screen end to end. It is the one link
-   in the chain that has never been closed.
-2. **Reaching a LAN Plex server from the extension.** Chrome's Private Network
-   Access rules block a public web page outright, which is why the doug.is
-   version can only use remote connections. Extensions have historically had more
-   latitude. If this works, PlexList works for people whose Plex has no remote
-   access — worth confirming early because it decides how useful this is.
-3. **IMDb pagination past 250 items.** Every list tested fit on one page, so
+**Not yet verified:**
+
+1. **IMDb pagination past 250 items.** Every list tested fit on one page, so
    `?page=N` is assumed, not confirmed. The extractor does not trust it: each
    fetched page must produce new titles, and if it does not, reading stops and
    the panel says only the first N could be read rather than silently building a
