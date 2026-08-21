@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PlexList promo tiles</title>
+<style>
+  /* Rendered by tools/promo-tiles.sh at exactly 440x280 and 1400x560.
+     Layout switches on the URL hash so both tiles stay in one file and cannot
+     drift apart visually. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: #17181b;
+    color: #eceef1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    /* An opaque background everywhere: the store rejects alpha, and a flatten
+       step cannot invent a colour the design never had. */
+  }
+  .bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(229,160,13,.16) 0%, rgba(229,160,13,0) 55%),
+      radial-gradient(90% 80% at 0% 100%, rgba(229,160,13,.07) 0%, rgba(229,160,13,0) 60%),
+      #17181b;
+  }
+  .wrap { position: relative; display: flex; align-items: center; width: 100%; height: 100%; }
+
+  .mark { display: flex; align-items: center; gap: 18px; }
+  .glyph { flex: none; }
+  .name { font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .tag { color: #b8bec8; line-height: 1.35; }
+  .kicker {
+    color: #e5a00d; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .14em;
+  }
+
+  /* ---------------------------------------------------- small: 440 x 280 */
+  body.small .wrap { flex-direction: column; justify-content: center; text-align: center; padding: 30px; }
+  body.small .mark { flex-direction: column; gap: 14px; }
+  body.small .glyph { width: 68px; height: 68px; }
+  body.small .name { font-size: 40px; }
+  body.small .tag { font-size: 15px; margin-top: 12px; max-width: 330px; }
+  body.small .kicker { font-size: 10px; margin-top: 16px; }
+
+  /* ------------------------------------------------- marquee: 1400 x 560 */
+  body.marquee .wrap { padding: 0 84px; gap: 70px; }
+  body.marquee .left { flex: 1 1 auto; }
+  body.marquee .glyph { width: 104px; height: 104px; }
+  body.marquee .name { font-size: 86px; }
+  body.marquee .tag { font-size: 27px; margin-top: 26px; max-width: 560px; }
+  body.marquee .kicker { font-size: 14px; margin-top: 30px; }
+  body.marquee .panel { flex: none; width: 430px; }
+
+  /* Abstract stand-in for the panel. Deliberately not a screenshot and
+     deliberately carries no real titles or server names. */
+  .panel {
+    background: #1c1d20; border: 1px solid #33363c; border-radius: 16px;
+    padding: 24px; box-shadow: 0 24px 60px rgba(0,0,0,.45);
+  }
+  .panel .h { font-size: 19px; font-weight: 800; margin-bottom: 16px; }
+  .panel .field {
+    height: 40px; border: 1px solid #3a3e45; border-radius: 9px; background: #141518;
+    margin-bottom: 12px; display: flex; align-items: center; padding: 0 13px;
+    color: #9aa1ac; font-size: 14px;
+  }
+  .panel .count {
+    border: 1px solid #33363c; border-radius: 10px; background: #17181b;
+    padding: 13px; font-size: 14px; color: #c8ccd3; line-height: 1.5;
+  }
+  .panel .count b { color: #eceef1; }
+  .panel .cta {
+    margin-top: 14px; height: 44px; border-radius: 10px; background: #e5a00d;
+    color: #1b1b1b; font-weight: 800; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="left">
+    <div class="mark">
+      <svg class="glyph" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+        <rect width="128" height="128" rx="28" fill="#1c1d20"/>
+        <g fill="#e5a00d">
+          <rect x="24" y="34" width="46" height="9" rx="4.5"/>
+          <rect x="24" y="59" width="46" height="9" rx="4.5" opacity="0.78"/>
+          <rect x="24" y="84" width="34" height="9" rx="4.5" opacity="0.56"/>
+        </g>
+        <path d="M84 44 L108 64 L84 84 Z" fill="#e5a00d"/>
+      </svg>
+      <div class="name">PlexList</div>
+    </div>
+    <div class="tag" id="tag">Turn an IMDb or Letterboxd list into a playlist on your own Plex server.</div>
+    <div class="kicker">IMDb &nbsp;·&nbsp; Letterboxd &nbsp;·&nbsp; Plex</div>
+  </div>
+
+  <div class="panel" id="panel">
+    <div class="h">Save to Plex</div>
+    <div class="field">Your Plex server</div>
+    <div class="field">Name this playlist</div>
+    <div class="count"><b>248</b> of the <b>250</b> titles on this page are in your library, and will be added in this order.</div>
+    <div class="cta">Create playlist</div>
+  </div>
+</div>
+
+<script>
+  // ?mode=small or ?mode=marquee, set by tools/promo-tiles.sh.
+  //
+  // A query parameter, not a hash: changing only the hash is a same-document
+  // navigation, so this script never re-runs and the second tile silently
+  // renders with the first tile's layout.
+  var mode = new URLSearchParams(location.search).get("mode") || "small";
+  document.body.className = mode;
+  if (mode === "small") {
+    document.getElementById("panel").style.display = "none";
+    document.getElementById("tag").textContent = "Turn any list into a Plex playlist.";
+  }
+</script>
+</body>
+</html>
