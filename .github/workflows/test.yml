@@ -49,6 +49,11 @@ jobs:
             console.log(`manifest OK, ${refs.length} referenced files present`);
           '
 
+      # The store listing lives in the repo, so its field limits are checkable
+      # here rather than discovered by a paste box refusing the text.
+      - name: Store listing fields fit their limits
+        run: tools/check-listing.sh
+
       # The extension must never call out to anything but Plex and the page it is
       # already on. This is the check that would catch an analytics snippet or a
       # stray CDN import sneaking in.

@@ -121,9 +121,16 @@ Tests, docs and repo furniture are left out. `package.sh` refuses to build if an
 icon is missing or older than the SVG it came from, and if `manifest.json` does
 not parse.
 
-Store listing needs: the 128px icon, a privacy policy URL ([PRIVACY.md](PRIVACY.md)),
-and a justification for each permission — the table in that file is written to be
-pasted into the review form.
+```bash
+npm run icons          # PNGs from icons/icon.svg (needs librsvg)
+npm run shots          # store/screenshot-*.png at 1280x800
+tools/promo-tiles.sh   # store/promo-*.png, flattened to 24-bit, no alpha
+```
+
+**[`store/listing.md`](store/listing.md) is the source of truth for the listing
+itself** — every field of the Developer Dashboard, the graphic asset inventory,
+and a checklist for what else has to change when a new source site is added.
+Edit it before pasting, or the live listing and the repo drift apart.
 
 ## Verified, and not
 
