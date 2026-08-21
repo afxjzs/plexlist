@@ -25,9 +25,69 @@ plex.tv and your own server — there is no backend.
 
 ## Install
 
-1. `chrome://extensions`
-2. Turn on **Developer mode**
-3. **Load unpacked** → pick this directory
+Once it is in the Chrome Web Store, install it from there. Until then — or if
+you want to run your own copy — load it unpacked.
+
+### Running it in developer mode
+
+You need Chrome (or any Chromium browser: Edge, Brave, Arc), a Plex account, and
+a Plex Media Server. There is no build step: the extension is plain JavaScript
+and loads straight from the source tree.
+
+1. Get the code.
+
+   ```bash
+   git clone https://github.com/afxjzs/plexlist.git
+   ```
+
+2. Open `chrome://extensions` and turn on **Developer mode** (top right).
+
+3. Click **Load unpacked** and select the `plexlist` folder — the one containing
+   `manifest.json`, not `src/`.
+
+4. Open a supported page, for example
+   [imdb.com/chart/top](https://www.imdb.com/chart/top/). A **Save to Plex**
+   button appears at the bottom right.
+
+5. Click it, then **Sign in with Plex**. A Plex tab opens for you to approve
+   access; it closes itself once you do. Pick a server, name the playlist,
+   create it.
+
+Your Plex token is stored in `chrome.storage.local` on your machine. **Sign
+out** in the panel deletes it along with the cached library index.
+
+### After changing the code
+
+Content scripts and the service worker are cached, so a plain page refresh is
+not enough:
+
+1. `chrome://extensions` → the **reload** icon on the PlexList card.
+2. Reload the IMDb or Letterboxd tab.
+
+### Debugging
+
+The panel reports its own errors, but anything deeper happens in the service
+worker. On the PlexList card, click **service worker** to open its DevTools
+console — every Plex request failure surfaces there with the status and the path
+that produced it.
+
+To inspect what is stored, run this in that console:
+
+```js
+chrome.storage.local.get(console.log)
+```
+
+You should see `plex_token`, `plex_client_id`, and `plex_index_cache`.
+
+### If something does not work
+
+| Symptom | Cause |
+|---|---|
+| No **Save to Plex** button | Not a supported page. It only appears on IMDb `/chart/` and `/list/ls…` pages and Letterboxd lists. |
+| Panel sits on "Waiting for you to approve…" | The Plex tab was not approved, or was closed first. It gives up after five minutes. |
+| "could not reach *server*" | The server is off, or on a different network. Check it responds at `app.plex.tv` first. |
+| "None of these titles are on *server*" | The library genuinely has none of them — the panel names what it skipped. |
+| Changes not taking effect | The extension was not reloaded. See above. |
 
 ### Permissions
 
