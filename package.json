@@ -1,0 +1,16 @@
+{
+  "name": "plexlist",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chrome extension: turn an IMDb or Letterboxd list into a Plex playlist.",
+  "type": "module",
+  "scripts": {
+    "test": "node test/match-test.mjs",
+    "check:imdb-chart": "test/run-extract-check.sh https://www.imdb.com/chart/top/",
+    "check:imdb-list": "test/run-extract-check.sh https://www.imdb.com/list/ls068082370/",
+    "check:letterboxd": "test/run-extract-check.sh https://letterboxd.com/arinbicer/list/mcu/",
+    "check:letterboxd-paged": "test/run-extract-check.sh https://letterboxd.com/official/list/letterboxds-top-500-films/",
+    "smoke:imdb": "test/run-ui-smoke.sh https://www.imdb.com/chart/top/",
+    "smoke:letterboxd": "test/run-ui-smoke.sh https://letterboxd.com/arinbicer/list/mcu/"
+  }
+}

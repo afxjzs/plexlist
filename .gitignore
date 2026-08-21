@@ -1,0 +1,26 @@
+# Local tooling state. .gstack/ holds live loopback auth tokens
+# (terminal-internal-token, browse.json) and megabytes of browsing telemetry —
+# it must never be committed.
+.gstack/
+.claude/
+
+# Editor / OS
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Node
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+
+# Build output for Chrome Web Store uploads
+dist/
+*.zip
+*.crx
+*.pem
+
+# Test scratch
+/tmp/
+*.local

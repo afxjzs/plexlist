@@ -1,0 +1,71 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Matcher unit tests
+        run: npm test
+
+      - name: Syntax check every source file
+        run: |
+          set -euo pipefail
+          # Content scripts are classic scripts; the worker files are modules, so
+          # they are checked through a .mjs copy.
+          node --check src/extract.js
+          node --check src/content.js
+          node --check test/ui-stub.js
+          node --check test/extract-check.js
+          cp src/plex.js /tmp/plex.mjs && node --check /tmp/plex.mjs
+          cp src/background.js /tmp/background.mjs && node --check /tmp/background.mjs
+
+      - name: Manifest is valid JSON and references files that exist
+        run: |
+          set -euo pipefail
+          node -e '
+            const fs = require("fs");
+            const m = JSON.parse(fs.readFileSync("manifest.json", "utf8"));
+            const refs = [
+              m.background.service_worker,
+              ...m.content_scripts.flatMap((c) => c.js),
+              ...Object.values(m.icons || {}),
+              ...Object.values(m.action?.default_icon || {}),
+            ];
+            let bad = 0;
+            for (const r of refs) {
+              if (!fs.existsSync(r)) { console.error("missing file referenced by manifest:", r); bad++; }
+            }
+            if (bad) process.exit(1);
+            console.log(`manifest OK, ${refs.length} referenced files present`);
+          '
+
+      # The extension must never call out to anything but Plex and the page it is
+      # already on. This is the check that would catch an analytics snippet or a
+      # stray CDN import sneaking in.
+      - name: No unexpected network endpoints
+        run: |
+          set -euo pipefail
+          ALLOWED='^(https://plex\.tv/|https://app\.plex\.tv/)'
+          FOUND=$(grep -ho 'https\?://[a-zA-Z0-9./*_-]*' src/*.js | sort -u || true)
+          echo "$FOUND"
+          BAD=$(printf '%s\n' "$FOUND" | grep -vE "$ALLOWED" || true)
+          if [ -n "$BAD" ]; then
+            echo "unexpected endpoint(s) in src/:" >&2
+            printf '%s\n' "$BAD" >&2
+            exit 1
+          fi
+          echo "no unexpected endpoints"
+
+  # Note: the live extractor checks (test/run-extract-check.sh) are deliberately
+  # not run here. IMDb serves 403 to headless Chromium, so they need a headed
+  # browser and would fail in CI for a reason that has nothing to do with the code.
