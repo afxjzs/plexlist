@@ -51,7 +51,9 @@ or shared, because nothing is collected.
 | `https://plex.tv/*` | Sign-in and server discovery |
 | `https://*.plex.direct/*` | Plex servers are reached over their signed `plex.direct` certificates |
 | Content scripts on `imdb.com` / `letterboxd.com` | To read the list off the page and show the panel |
-| *Optional* all-sites access | Only needed to reach a Plex server on your local network, or one on a custom address. Not requested at install; you grant it yourself if you need it |
+
+PlexList requests no all-sites or wildcard host access, and no optional
+permissions. The four origins above are the complete list.
 
 ## Removing your data
 

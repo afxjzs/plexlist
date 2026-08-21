@@ -197,13 +197,19 @@ export async function connect(server) {
   try {
     return await Promise.any(tries);
   } catch {
+    /* Plex normally advertises a *.plex.direct hostname for a server even on a
+     * local network, and that origin is covered by host_permissions — verified
+     * against a server with Remote Access switched off. So reaching nothing here
+     * means the server is genuinely unreachable, not that a permission is
+     * missing. Say that, rather than sending people to toggle a setting that
+     * will not help. */
     const localCount = conns.filter((c) => c.local).length;
     throw new Error(
       `could not reach ${server.name} on any of its ${conns.length} connections` +
         (localCount
-          ? `. ${localCount} of them are private-network addresses — grant PlexList ` +
-            `access to all sites (see the README) so it may reach your LAN`
-          : "")
+          ? ` (${localCount} local, ${conns.length - localCount} remote)`
+          : "") +
+        ". Check it is powered on and on the same network, or that Remote Access is enabled."
     );
   }
 }

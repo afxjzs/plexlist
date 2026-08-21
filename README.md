@@ -29,16 +29,21 @@ plex.tv and your own server — there is no backend.
 2. Turn on **Developer mode**
 3. **Load unpacked** → pick this directory
 
-### Permissions, and the one you may need to add
+### Permissions
 
-Installed, it asks only for `plex.tv` and `*.plex.direct`. That covers Plex
-accounts reachable over the internet.
+Four origins, all granted at install, and nothing else:
 
-If your server is only on your LAN, open the extension's details and set **Site
-access** to **On all sites**. Without it Chrome blocks the request to a private
-address and the panel says so explicitly rather than reporting a mysterious
-network error. This is declared as an *optional* permission so the default
-install stays narrow.
+| Origin | Why |
+|---|---|
+| `https://plex.tv/*` | Sign in and list the servers on your account |
+| `https://*.plex.direct/*` | Talk to your Plex server |
+| `https://www.imdb.com/*` | Read the list off the page |
+| `https://letterboxd.com/*` | Read the list off the page |
+
+There is deliberately no all-sites permission. Plex advertises a `*.plex.direct`
+hostname for a server even when it is only on your local network, so that one
+origin covers both remote and LAN servers — verified against a server with
+Remote Access switched off.
 
 ## How it works
 

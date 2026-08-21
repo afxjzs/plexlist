@@ -11,6 +11,9 @@
     "check:letterboxd": "test/run-extract-check.sh https://letterboxd.com/arinbicer/list/mcu/",
     "check:letterboxd-paged": "test/run-extract-check.sh https://letterboxd.com/official/list/letterboxds-top-500-films/",
     "smoke:imdb": "test/run-ui-smoke.sh https://www.imdb.com/chart/top/",
-    "smoke:letterboxd": "test/run-ui-smoke.sh https://letterboxd.com/arinbicer/list/mcu/"
+    "smoke:letterboxd": "test/run-ui-smoke.sh https://letterboxd.com/arinbicer/list/mcu/",
+    "icons": "icons/build.sh",
+    "shots": "tools/store-shots.sh",
+    "package": "tools/package.sh"
   }
 }

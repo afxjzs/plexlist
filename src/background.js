@@ -5,8 +5,10 @@
  * renders the dialog.
  *
  * Extensions are not subject to page CORS, but they ARE subject to host
- * permissions, which is why an unreachable server produces an explicit
- * "grant access to all sites" message rather than a bare network error.
+ * permissions. Those are narrow on purpose: plex.tv and *.plex.direct only. Plex
+ * advertises a *.plex.direct hostname even for a server that is only on the
+ * local network, so no wildcard host access is needed — verified against a
+ * server with Remote Access switched off.
  */
 
 import * as plex from "./plex.js";
