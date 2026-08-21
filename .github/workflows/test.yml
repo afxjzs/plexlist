@@ -55,7 +55,10 @@ jobs:
       - name: No unexpected network endpoints
         run: |
           set -euo pipefail
-          ALLOWED='^(https://plex\.tv/|https://app\.plex\.tv/)'
+          # http://www.w3.org/2000/svg is the SVG XML namespace, used by the
+          # inline chevron in the panel CSS. It is an identifier, never
+          # dereferenced by the browser, so it is not a network endpoint.
+          ALLOWED='^(https://plex\.tv/|https://app\.plex\.tv/|http://www\.w3\.org/2000/svg$)'
           FOUND=$(grep -ho 'https\?://[a-zA-Z0-9./*_-]*' src/*.js | sort -u || true)
           echo "$FOUND"
           BAD=$(printf '%s\n' "$FOUND" | grep -vE "$ALLOWED" || true)
